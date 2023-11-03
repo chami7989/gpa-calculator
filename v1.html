@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GPA Calculator</title>
+    <link rel="stylesheet" type="text/css" href="cssr.css">
+    <style>
+        .subject-entry {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .subject-entry label {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>GPA Calculator</h1>
+    <div class="container">
+        <p>Enter the number of subjects:</p>
+        <input type="number" id="numSubjects" min="1">
+        <button onclick="getSubjectInfo()">Submit</button>
+
+        <div id="subjectInfo"></div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function getSubjectInfo() {
+            const numSubjects = document.getElementById("numSubjects").value;
+            let subjectInfoHTML = "<h2>Enter Subject Information</h2>";
+            for (let i = 1; i <= numSubjects; i++) {
+                subjectInfoHTML += `
+                    <div class="subject-entry">
+                        <p>Subject ${i}:</p>
+                        <label for="subjectName${i}">Subject Name:</label>
+                        <input type="text" id="subjectName${i}" required>
+                        <label for="subjectCredits${i}">Credits:</label>
+                        <select id="subjectCredits${i}" required>
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                        <label for="subjectGrade${i}">Grade:</label>
+                        <select id="subjectGrade${i}" required>
+                            <option value="A+">A+</option>
+                            <option value="A">A</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B">B</option>
+                            <option value="B-">B-</option>
+                            <option value="C+">C+</option>
+                            <option value="C">C</option>
+                            <option value="C-">C-</option>
+                            <option value="D">D</option>
+                            <option value="IWE">IWE</option>
+                        </select>
+                    </div>
+                `;
+            }
+            subjectInfoHTML += "<button onclick='calculateGPA()'>Calculate GPA</button>";
+            document.getElementById("subjectInfo").innerHTML = subjectInfoHTML;
+        }
+
+        function calculateGPA() {
+            const numSubjects = document.getElementById("numSubjects").value;
+            let totalCredits = 0;
+            let totalGradePoints = 0;
+
+            for (let i = 1; i <= numSubjects; i++) {
+                const credits = document.getElementById(`subjectCredits${i}`).value;
+                const grade = document.getElementById(`subjectGrade${i}`).value;
+
+                // Convert the grade to a numeric value
+                let gradePoints = 0;
+                if (grade === 'A+') {
+                    gradePoints = 4.2;
+                } else if (grade === 'A') {
+                    gradePoints = 4.0;
+                } else if (grade === 'A-') {
+                    gradePoints = 3.7;
+                } else if (grade === 'B+') {
+                    gradePoints = 3.3;
+                } else if (grade === 'B') {
+                    gradePoints = 3.0;
+                } else if (grade === 'B-') {
+                    gradePoints = 2.7;
+                } else if (grade === 'C+') {
+                    gradePoints = 2.3;
+                } else if (grade === 'C') {
+                    gradePoints = 2.0;
+                } else if (grade === 'C-') {
+                    gradePoints = 1.5;
+                } else if (grade === 'D') {
+                    gradePoints = 1.0;
+                } else if (grade === 'IWE') {
+                    gradePoints = 0.0;
+                }
+
+                totalCredits += parseInt(credits);
+                totalGradePoints += gradePoints * credits;
+            }
+
+            if (totalCredits === 0) {
+                gpa = 0.0;
+            } else {
+                gpa = totalGradePoints / totalCredits;
+            }
+
+            document.getElementById("result").innerHTML = `<h2>Your GPA for this semester is: ${gpa.toFixed(2)}</h2>`;
+        }
+    </script>
+</body>
+</html>
